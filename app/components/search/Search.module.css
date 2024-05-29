@@ -1,0 +1,42 @@
+.logo {
+	object-fit: contain;
+	margin-right: 10px;
+	width: 65px;
+	height: 65px;
+}
+
+.headerContainer {
+	background-color: #fee600;
+}
+
+.container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 50px;
+}
+
+.searchContainer {
+	display: flex;
+	align-items: center;
+	width: 1084px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.searchInput {
+	flex: 1;
+	border: none;
+	padding: 10px;
+	font-size: 16px;
+}
+
+.searchButton {
+	background-color: #eeeeee;
+	color: rgb(0, 0, 0);
+	border: none;
+	padding: 10px 15px;
+	cursor: pointer;
+	font-size: 16px;
+}
