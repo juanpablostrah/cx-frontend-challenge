@@ -22,5 +22,9 @@ export interface Shipping {
 }
 
 export interface ApiProductResponse {
+	available_sorts: {
+		id: string;
+		name: string;
+	}[];
 	results: ProductType[];
 }

@@ -1,0 +1,47 @@
+.selectorContainer {
+	display: flex;
+	align-items: center;
+	margin-bottom: 16px;
+}
+
+.selectorLabel {
+	font-family: Proxima Nova Regular, sans-serif;
+	color: #333;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1.7;
+	margin-right: 6px;
+	white-space: nowrap;
+}
+
+.selector {
+	padding: 8px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	font-size: 14px;
+	border: none;
+	background-color: #eeeeee;
+}
+
+.selector:hover {
+	color: #3483fa;
+}
+
+.optionSelector {
+	background-color: white;
+}
+
+@media (max-width: 768px) {
+	.selectorContainer {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.selectorLabel {
+		margin-bottom: 8px;
+	}
+
+	.selector {
+		width: 100%;
+	}
+}

@@ -1,0 +1,109 @@
+.selectorLabel {
+	font-family: Proxima Nova Regular, sans-serif;
+	color: #333;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1.7;
+	margin-right: 6px;
+	white-space: nowrap;
+}
+
+.selector {
+	padding: 8px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	font-size: 14px;
+	border: none;
+	background-color: #eeeeee;
+}
+
+.selector:hover {
+	color: #3483fa;
+}
+
+.sortListContainer {
+	position: relative;
+	display: inline-block;
+	margin-bottom: 16px;
+	display: flex;
+	align-items: center;
+	justify-content: right;
+	width: 60%;
+	margin: auto;
+}
+
+.sortButton {
+	padding: 8px 16px;
+	cursor: pointer;
+	font-size: 14px;
+	border: none;
+	background-color: #eeeeee;
+	font-family: Proxima Nova Regular;
+}
+
+.sortButton:hover {
+	color: #3483fa;
+}
+
+.sortOptions {
+	position: absolute;
+	top: 100%;
+	right: 0;
+	background: white;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	z-index: 10;
+	font-family: Proxima Nova Regular;
+	border-radius: 8px;
+	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1), 2px 0 8px rgba(0, 0, 0, 0.1);
+	width: 160px;
+	text-align: left;
+}
+
+.sortOptions li {
+	padding: 8px 16px;
+	cursor: pointer;
+}
+
+.sortOptions li:hover {
+	background-color: #f0f0f0;
+}
+
+.sortOptions li.active {
+	font-weight: bold;
+	background-color: #e0e0e0;
+	color: #3483fa;
+	border-left: 4px solid #3483fa;
+}
+
+.sortSymbol {
+	display: inline-block;
+	margin-left: 8px;
+	transition: transform 0.3s ease;
+}
+
+.sortSymbol.rotated {
+	color: #3483fa;
+	width: 12px;
+	height: 10px;
+}
+
+.sortSymbol.noRotated {
+	color: #3483fa;
+	width: 12px;
+	height: 10px;
+	transform: rotate(180deg);
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+	.sortButton {
+		width: 100%;
+		text-align: left;
+	}
+
+	.sortOptions {
+		width: 100%;
+	}
+}

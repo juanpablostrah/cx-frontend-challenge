@@ -1,13 +1,19 @@
-import { ProductType } from "@/components/products/ProductType";
+import {
+	ApiProductResponse,
+	ProductType,
+} from "@/components/products/ProductType";
 import React, { createContext, useState, useContext, ReactNode } from "react";
 
 interface ProductContextProps {
 	products: ProductType[];
-	addProducts: (product: ProductType[]) => void;
+	searchResponse: ApiProductResponse;
+	addProducts: (searchResponse: ApiProductResponse) => void;
 	removeProducts: () => void;
+	searchText: string;
+	setSearchText: (text: string) => void;
 }
 
-export const ProductContext = createContext<ProductContextProps | undefined>(
+const ProductContext = createContext<ProductContextProps | undefined>(
 	undefined
 );
 
@@ -19,9 +25,12 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
 	children,
 }) => {
 	const [products, setProducts] = useState<ProductType[]>([]);
+	const [searchResponse, setSearchResponse] = useState<ApiProductResponse>();
+	const [searchText, setSearchText] = useState<string>("");
 
-	const addProducts = (newProducts: ProductType[]) => {
-		setProducts(newProducts);
+	const addProducts = (searchResponse: ApiProductResponse) => {
+		setSearchResponse(searchResponse);
+		setProducts(searchResponse.results);
 	};
 
 	const removeProducts = () => {
@@ -29,7 +38,16 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
 	};
 
 	return (
-		<ProductContext.Provider value={{ products, addProducts, removeProducts }}>
+		<ProductContext.Provider
+			value={{
+				products,
+				addProducts,
+				removeProducts,
+				searchResponse,
+				searchText,
+				setSearchText,
+			}}
+		>
 			{children}
 		</ProductContext.Provider>
 	);

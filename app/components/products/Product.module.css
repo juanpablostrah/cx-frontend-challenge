@@ -75,11 +75,26 @@
 }
 
 .widthDescription {
-	width: 400px;
+	width: 600px;
 }
 
 .horizontalLine {
 	margin-bottom: 2px;
+}
+
+.searchProductTitle {
+	font-family: Proxima Nova Regular, sans-serif;
+	color: #333;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1.7;
+	margin-right: 6px;
+	white-space: nowrap;
+}
+
+.selectOrderBy {
+	border: none;
+	background-color: #eeeeee;
 }
 
 /*Responsive*/

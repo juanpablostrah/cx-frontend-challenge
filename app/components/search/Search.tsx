@@ -6,27 +6,35 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useProductContext } from "@/context/ProductContext";
 import { ApiProductResponse } from "../products/ProductType";
 
-const Search = () => {
-	const [searchText, setSearchText] = useState<string>("");
+export const searchProducts = async (
+	text: string,
+	removeProducts: () => void,
+	addProducts: (apiResponse: ApiProductResponse) => void,
+	orderBy?: string
+) => {
+	removeProducts();
+	const response = await fetch(
+		`https://api.mercadolibre.com/sites/MLA/search?q=${text}&sort=${orderBy}&limit=10`
+	);
+	const products: ApiProductResponse = await response.json();
+	addProducts(products);
+	localStorage.setItem("searchText", text);
+};
 
-	const { addProducts, removeProducts } = useProductContext();
+const Search = () => {
+	const { addProducts, removeProducts, setSearchText, searchText } =
+		useProductContext();
 
 	useEffect(() => {
 		const storageSearchText = localStorage.getItem("searchText");
 		if (storageSearchText !== null) {
 			setSearchText(storageSearchText);
-			searchProducts(storageSearchText);
+			searchProducts(storageSearchText, removeProducts, addProducts);
 		}
 	}, []);
 
-	const searchProducts = async (text: string = searchText) => {
-		removeProducts();
-		const response = await fetch(
-			`https://api.mercadolibre.com/sites/MLA/search?q=${text}&limit=10`
-		);
-		const products: ApiProductResponse = await response.json();
-		addProducts(products.results);
-		localStorage.setItem("searchText", text);
+	const handleSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setSearchText(e.target.value);
 	};
 
 	return (
@@ -39,13 +47,17 @@ const Search = () => {
 						placeholder="Buscar productos, marcas y más..."
 						value={searchText}
 						className={styles.searchInput}
-						onChange={(e) => setSearchText(e.target.value)}
+						onChange={(e) => handleSearchText(e)}
 					/>
-					<FontAwesomeIcon
-						icon={faSearch}
+					<button
+						onClick={() =>
+							searchProducts(searchText, removeProducts, addProducts)
+						}
 						className={styles.searchButton}
-						onClick={() => searchProducts()}
-					/>
+						aria-label="Buscar"
+					>
+						<FontAwesomeIcon icon={faSearch} />
+					</button>
 				</div>
 			</div>
 		</header>
