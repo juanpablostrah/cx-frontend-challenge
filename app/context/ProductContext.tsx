@@ -11,6 +11,15 @@ interface ProductContextProps {
 	removeProducts: () => void;
 	searchText: string;
 	setSearchText: (text: string) => void;
+	selectedSort?: SortOption;
+	setSelectedSort: (sortOption: SortOption) => void;
+	filterSelected: string;
+	setFilterSelected: (filterId: string) => void;
+}
+
+interface SortOption {
+	id: string;
+	name: string;
 }
 
 const ProductContext = createContext<ProductContextProps | undefined>(
@@ -25,11 +34,19 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
 	children,
 }) => {
 	const [products, setProducts] = useState<ProductType[]>([]);
-	const [searchResponse, setSearchResponse] = useState<ApiProductResponse>();
+	const [searchResponse, setSearchResponse] = useState<ApiProductResponse>({
+		results: [],
+		available_filters: undefined,
+		available_sorts: [],
+	});
 	const [searchText, setSearchText] = useState<string>("");
+	const [selectedSort, setSelectedSort] =
+		useState<{ id: string; name: string }>();
+	const [filterSelected, setFilterSelected] = useState<string>("");
 
 	const addProducts = (searchResponse: ApiProductResponse) => {
 		setSearchResponse(searchResponse);
+		console.log("searchResponse: ", searchResponse.available_filters);
 		setProducts(searchResponse.results);
 	};
 
@@ -46,6 +63,10 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
 				searchResponse,
 				searchText,
 				setSearchText,
+				selectedSort,
+				setSelectedSort,
+				filterSelected,
+				setFilterSelected,
 			}}
 		>
 			{children}

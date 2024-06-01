@@ -1,0 +1,37 @@
+.container {
+	display: flex;
+	flex-direction: column;
+}
+
+.title {
+	font-family: "Proxima Nova Regular";
+	color: #333;
+	font-size: 16px;
+	font-weight: 600;
+	line-height: 1.25;
+	margin-bottom: 10px;
+}
+
+.filterOption {
+	cursor: pointer;
+	font-family: "Proxima Nova Regular";
+	color: #666;
+	float: left;
+	margin-left: 0;
+	font-size: 14px;
+	font-weight: 300;
+	margin: 0 0 6px;
+}
+
+.input {
+	background-color: #fafafa;
+	border-color: #777;
+	border-radius: 0.375em;
+	font-size: 13px;
+	height: 25px;
+	width: 84px;
+}
+
+.spanPrice {
+	color: #666;
+}

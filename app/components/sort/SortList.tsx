@@ -6,10 +6,15 @@ import styles from "./SortList.module.css";
 const SortList: React.FC = () => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [isRotated, setIsRotated] = useState(false);
-	const { searchResponse, searchText, removeProducts, addProducts } =
-		useProductContext();
-	const [selectedSort, setSelectedSort] =
-		useState<{ id: string; name: string }>();
+	const {
+		searchResponse,
+		searchText,
+		removeProducts,
+		addProducts,
+		selectedSort,
+		setSelectedSort,
+		filterSelected,
+	} = useProductContext();
 
 	const toggleDropdown = () => {
 		toggleRotation();
@@ -17,7 +22,13 @@ const SortList: React.FC = () => {
 	};
 
 	useEffect(() => {
-		searchProducts(searchText, removeProducts, addProducts, selectedSort?.id);
+		searchProducts({
+			text: searchText,
+			removeProducts,
+			addProducts,
+			orderBy: selectedSort?.id,
+			filterPrice: filterSelected,
+		});
 	}, [selectedSort]);
 
 	const handleSortChange = (sortOption: { id: string; name: string }) => {
@@ -44,7 +55,7 @@ const SortList: React.FC = () => {
 			</button>
 			{isOpen && (
 				<ul className={styles.sortOptions}>
-					{searchResponse.available_sorts.map((sortOption) => (
+					{searchResponse.available_sorts?.map((sortOption) => (
 						<li
 							key={sortOption.id}
 							className={

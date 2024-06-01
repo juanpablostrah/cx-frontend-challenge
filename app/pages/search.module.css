@@ -1,0 +1,13 @@
+.search {
+	display: flex;
+	padding-top: 100px;
+	background-color: red;
+}
+
+.search aside {
+	background-color: green;
+}
+
+.search main {
+	background-color: blue;
+}

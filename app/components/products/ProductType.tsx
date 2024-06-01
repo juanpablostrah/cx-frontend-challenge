@@ -26,5 +26,6 @@ export interface ApiProductResponse {
 		id: string;
 		name: string;
 	}[];
+	available_filters: any;
 	results: ProductType[];
 }
