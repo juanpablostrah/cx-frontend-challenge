@@ -1,10 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import logoML from "../../../resources/logo_ml.png";
 import styles from "./Search.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { useProductContext } from "@/context/ProductContext";
 import { ApiProductResponse } from "../products/ProductType";
+import { useSelector, useDispatch } from "react-redux";
+
+import {
+	setSearchText,
+	removeProducts,
+	addProducts,
+} from "@/redux/slices/productSlice";
+import { RootState } from "../../redux/store";
 
 type SearchProductsParams = {
 	text: string;
@@ -28,34 +35,36 @@ export const searchProducts = async ({
 		url += `&sort=${orderBy}`;
 	}
 	if (filterPrice) {
-		console.log("filterPrice1111: ", filterPrice);
 		url += `&price=${filterPrice}`;
 	}
 	const response = await fetch(url);
-	console.log("url: ", url);
 	const products: ApiProductResponse = await response.json();
 	addProducts(products);
 	localStorage.setItem("searchText", text);
 };
 
 const Search = () => {
-	const { addProducts, removeProducts, setSearchText, searchText } =
-		useProductContext();
+	const dispatch = useDispatch();
+	const searchText = useSelector(
+		(state: RootState) => state.products.searchText
+	);
 
 	useEffect(() => {
 		const storageSearchText = localStorage.getItem("searchText");
 		if (storageSearchText !== null) {
-			setSearchText(storageSearchText);
+			dispatch(setSearchText(storageSearchText));
 			searchProducts({
 				text: storageSearchText,
-				removeProducts,
-				addProducts,
+				removeProducts: () => dispatch(removeProducts()),
+				addProducts: (products) => dispatch(addProducts(products)),
 			});
 		}
-	}, []);
+	}, [dispatch]);
 
 	const handleSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setSearchText(e.target.value);
+		const newText = e.target.value;
+		console.log("e.target.value: ", newText);
+		dispatch(setSearchText(newText));
 	};
 
 	return (
@@ -68,14 +77,14 @@ const Search = () => {
 						placeholder="Buscar productos, marcas y más..."
 						value={searchText}
 						className={styles.searchInput}
-						onChange={(e) => handleSearchText(e)}
+						onChange={handleSearchText}
 					/>
 					<button
 						onClick={() =>
 							searchProducts({
 								text: searchText,
-								removeProducts,
-								addProducts,
+								removeProducts: () => dispatch(removeProducts()),
+								addProducts: (products) => dispatch(addProducts(products)),
 							})
 						}
 						className={styles.searchButton}

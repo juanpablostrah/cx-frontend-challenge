@@ -1,20 +1,21 @@
-import { useProductContext } from "@/context/ProductContext";
+import {
+	addProducts,
+	removeProducts,
+	setSelectedSort,
+} from "@/redux/slices/productSlice";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 import { searchProducts } from "../search/Search";
 import styles from "./SortList.module.css";
 
 const SortList: React.FC = () => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [isRotated, setIsRotated] = useState(false);
-	const {
-		searchResponse,
-		searchText,
-		removeProducts,
-		addProducts,
-		selectedSort,
-		setSelectedSort,
-		filterSelected,
-	} = useProductContext();
+
+	const dispatch = useDispatch();
+	const { searchText, searchResponse, selectedSort, filterSelected } =
+		useSelector((state: RootState) => state.products);
 
 	const toggleDropdown = () => {
 		toggleRotation();
@@ -24,15 +25,15 @@ const SortList: React.FC = () => {
 	useEffect(() => {
 		searchProducts({
 			text: searchText,
-			removeProducts,
-			addProducts,
+			removeProducts: () => dispatch(removeProducts()),
+			addProducts: (products) => dispatch(addProducts(products)),
 			orderBy: selectedSort?.id,
 			filterPrice: filterSelected,
 		});
-	}, [selectedSort]);
+	}, [selectedSort, searchText, filterSelected, dispatch]);
 
 	const handleSortChange = (sortOption: { id: string; name: string }) => {
-		setSelectedSort(sortOption);
+		dispatch(setSelectedSort(sortOption));
 		setIsOpen(false);
 	};
 

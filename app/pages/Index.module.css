@@ -1,0 +1,54 @@
+.header {
+	position: absolute;
+	z-index: 1;
+	width: 100%;
+}
+
+.container {
+	position: absolute;
+	display: flex;
+	margin-left: 20vw;
+	width: 60vw;
+	padding-top: 65px;
+	min-height: 100vh;
+}
+
+.aside {
+	display: flex;
+	width: 20%;
+}
+
+.main {
+	display: flex;
+	width: 80%;
+}
+
+/*Responsive*/
+@media (max-width: 320px) {
+	.container {
+		margin-left: 0;
+	}
+}
+
+@media (max-width: 768px) {
+	.container {
+		width: auto;
+	}
+}
+
+@media (min-width: 1280px) {
+	.container {
+		flex-direction: row;
+	}
+}
+
+@media (max-width: 1280px) {
+	.container {
+		position: absolute;
+		display: flex;
+		padding-top: 65px;
+		min-height: 100vh;
+		width: auto;
+		margin-left: 0;
+	}
+}

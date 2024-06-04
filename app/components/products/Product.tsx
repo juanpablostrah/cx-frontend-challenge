@@ -53,9 +53,6 @@ const Product = ({ product }: ProductProps) => {
 						</p>
 					)}
 				</div>
-				<div className={styles.widthProvince}>
-					<p className={styles.province}>{"Capital Federal"}</p>
-				</div>
 			</div>
 			<div className={styles.horizontalLine} />
 		</div>

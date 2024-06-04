@@ -23,12 +23,10 @@
 
 .sortListContainer {
 	position: relative;
-	display: inline-block;
 	margin-bottom: 16px;
 	display: flex;
 	align-items: center;
 	justify-content: right;
-	width: 60%;
 	margin: auto;
 }
 
@@ -99,11 +97,20 @@
 /* Responsividad */
 @media (max-width: 768px) {
 	.sortButton {
-		width: 100%;
 		text-align: left;
 	}
 
 	.sortOptions {
 		width: 100%;
+	}
+
+	.sortListContainer {
+		justify-content: right;
+	}
+}
+
+@media (max-width: 1280px) {
+	.sortListContainer {
+		justify-content: left;
 	}
 }
