@@ -3,10 +3,10 @@ import {
 	removeProducts,
 	setSelectedSort,
 } from "@/redux/slices/productSlice";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
-import { searchProducts } from "../search/Search";
+import { RootState } from "../../../redux/store";
+import { searchProducts } from "../../navbar/navbarSearch/NavbarSearch";
 import styles from "./SortList.module.css";
 
 const SortList: React.FC = () => {
@@ -22,19 +22,16 @@ const SortList: React.FC = () => {
 		setIsOpen(!isOpen);
 	};
 
-	useEffect(() => {
+	const handleSortChange = (sortOption: { id: string; name: string }) => {
+		dispatch(setSelectedSort(sortOption));
+		setIsOpen(false);
 		searchProducts({
 			text: searchText,
 			removeProducts: () => dispatch(removeProducts()),
 			addProducts: (products) => dispatch(addProducts(products)),
-			orderBy: selectedSort?.id,
+			orderBy: sortOption.id,
 			filterPrice: filterSelected,
 		});
-	}, [selectedSort, searchText, filterSelected, dispatch]);
-
-	const handleSortChange = (sortOption: { id: string; name: string }) => {
-		dispatch(setSelectedSort(sortOption));
-		setIsOpen(false);
 	};
 
 	const toggleRotation = () => {

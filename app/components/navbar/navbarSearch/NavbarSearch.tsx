@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import logoML from "../../../resources/logo_ml.png";
-import styles from "./Search.module.css";
+import logoML from "../../../../resources/logo_ml.png";
+import styles from "./NavbarSearch.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { ApiProductResponse } from "../products/ProductType";
+import { ApiProductResponse } from "../../search/products/ProductType";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
@@ -11,7 +11,7 @@ import {
 	removeProducts,
 	addProducts,
 } from "@/redux/slices/productSlice";
-import { RootState } from "../../redux/store";
+import { RootState } from "../../../redux/store";
 
 type SearchProductsParams = {
 	text: string;
@@ -40,31 +40,45 @@ export const searchProducts = async ({
 	const response = await fetch(url);
 	const products: ApiProductResponse = await response.json();
 	addProducts(products);
-	localStorage.setItem("searchText", text);
 };
 
-const Search = () => {
+const NavbarSearch = () => {
 	const dispatch = useDispatch();
 	const searchText = useSelector(
 		(state: RootState) => state.products.searchText
 	);
 
 	useEffect(() => {
-		const storageSearchText = localStorage.getItem("searchText");
-		if (storageSearchText !== null) {
-			dispatch(setSearchText(storageSearchText));
-			searchProducts({
-				text: storageSearchText,
-				removeProducts: () => dispatch(removeProducts()),
-				addProducts: (products) => dispatch(addProducts(products)),
-			});
+		if (typeof window !== "undefined") {
+			const params = new URLSearchParams(window.location.search);
+			const query = params.get("q");
+			if (query) {
+				dispatch(setSearchText(query));
+				searchProducts({
+					text: query,
+					removeProducts: () => dispatch(removeProducts()),
+					addProducts: (products) => dispatch(addProducts(products)),
+				});
+			}
 		}
 	}, [dispatch]);
 
-	const handleSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const newText = e.target.value;
-		console.log("e.target.value: ", newText);
-		dispatch(setSearchText(newText));
+	const handleSearchClick = () => {
+		const newUrl = new URL(window.location.href);
+		newUrl.searchParams.set("q", searchText);
+		window.history.pushState({}, "", newUrl.toString());
+
+		searchProducts({
+			text: searchText,
+			removeProducts: () => dispatch(removeProducts()),
+			addProducts: (products) => dispatch(addProducts(products)),
+		});
+	};
+
+	const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === "Enter") {
+			handleSearchClick();
+		}
 	};
 
 	return (
@@ -77,16 +91,11 @@ const Search = () => {
 						placeholder="Buscar productos, marcas y más..."
 						value={searchText}
 						className={styles.searchInput}
-						onChange={handleSearchText}
+						onChange={(e) => dispatch(setSearchText(e.target.value))}
+						onKeyPress={handleKeyPress}
 					/>
 					<button
-						onClick={() =>
-							searchProducts({
-								text: searchText,
-								removeProducts: () => dispatch(removeProducts()),
-								addProducts: (products) => dispatch(addProducts(products)),
-							})
-						}
+						onClick={handleSearchClick}
 						className={styles.searchButton}
 						aria-label="Buscar"
 					>
@@ -98,4 +107,4 @@ const Search = () => {
 	);
 };
 
-export default Search;
+export default NavbarSearch;

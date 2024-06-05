@@ -1,9 +1,8 @@
-// src/slices/productSlice.ts
 import {
 	ApiProductResponse,
 	ProductState,
 	SortOption,
-} from "@/components/products/ProductType";
+} from "@/components/search/products/ProductType";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: ProductState = {

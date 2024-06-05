@@ -5,8 +5,8 @@ import {
 } from "@/redux/slices/productSlice";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
-import { searchProducts } from "../search/Search";
+import { RootState } from "../../../redux/store";
+import { searchProducts } from "../../navbar/navbarSearch/NavbarSearch";
 import styles from "./FilterPrice.module.css";
 
 type FilterValue = {
@@ -23,8 +23,9 @@ const FilterPrice = () => {
 	const [maxPriceValue, setMaxPriceValue] = useState<string>("");
 
 	const dispatch = useDispatch();
-	const { searchText, searchResponse, selectedSort, filterSelected } =
-		useSelector((state: RootState) => state.products);
+	const { searchResponse, searchText, selectedSort } = useSelector(
+		(state: RootState) => state.products
+	);
 
 	useEffect(() => {
 		setFilterPrice(
@@ -34,18 +35,15 @@ const FilterPrice = () => {
 		);
 	}, [searchResponse]);
 
-	useEffect(() => {
+	const handleSearchByFilterPrice = (filterId: string) => {
+		dispatch(setFilterSelected(filterId));
 		searchProducts({
 			text: searchText,
 			removeProducts: () => dispatch(removeProducts()),
 			addProducts: (products) => dispatch(addProducts(products)),
 			orderBy: selectedSort?.id,
-			filterPrice: filterSelected,
+			filterPrice: filterId,
 		});
-	}, [filterSelected, searchText, selectedSort, dispatch]);
-
-	const handleSearchByFilterPrice = (filterId: string) => {
-		dispatch(setFilterSelected(filterId));
 	};
 
 	const handleOnClickBetweenPrice = () => {
@@ -58,7 +56,16 @@ const FilterPrice = () => {
 				? "*"
 				: parseFloat(maxPriceValue).toFixed(1);
 
-		dispatch(setFilterSelected(`${minValue}-${maxValue}`));
+		const filterRange = `${minValue}-${maxValue}`;
+		dispatch(setFilterSelected(filterRange));
+
+		searchProducts({
+			text: searchText,
+			removeProducts: () => dispatch(removeProducts()),
+			addProducts: (products) => dispatch(addProducts(products)),
+			orderBy: selectedSort?.id,
+			filterPrice: filterRange,
+		});
 	};
 
 	return (

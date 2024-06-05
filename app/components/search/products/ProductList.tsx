@@ -1,4 +1,4 @@
-import { RootState } from "../../redux/store";
+import { RootState } from "../../../redux/store";
 import React from "react";
 import { useSelector } from "react-redux";
 import SortList from "../sort/SortList";
@@ -11,9 +11,9 @@ const ProductList = () => {
 	return (
 		<div style={{ margin: "auto" }}>
 			<section aria-labelledby="product-list-title">
-				<SortList />
 				{products?.length > 0 ? (
 					<>
+						<SortList />
 						<ul>
 							{products.map((product) => (
 								<Product key={product.id} product={product} />
